@@ -1,0 +1,9 @@
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 20MB
