@@ -5,6 +5,7 @@ import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.content.Media;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeTypeUtils;
@@ -16,6 +17,7 @@ import java.io.InputStream;
 @Service
 @RequiredArgsConstructor
 public class ImageService {
+    @Qualifier("googleGenAiChatModel")
     private final ChatModel chatModel;
 
     public String explain(MultipartFile file) {
