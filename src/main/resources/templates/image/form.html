@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello PDF & Image!</title>
+</head>
+<body>
+<h1>Image RAG</h1>
+<section>
+    <p>[[${msg}]]</p>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required>
+        <button>Image 업로드</button>
+    </form>
+    <p>[[${answer}]]</p>
+    <!--    <form th:action="@{/pdf/rag}" method="post">-->
+    <!--        <input type="text" name="query" placeholder="질문을 입력하세요">-->
+    <!--        <button>질문하기</button>-->
+    <!--    </form>-->
+</section>
+</body>
+</html>
