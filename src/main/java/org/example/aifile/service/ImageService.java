@@ -30,7 +30,9 @@ public class ImageService {
                     MimeTypeUtils.parseMimeType(file.getContentType()),
                     new ByteArrayResource(resized));
             return chatClient.prompt()
-                    .user(u -> u.media(media)).call().content();
+                    .user(u -> u
+                            .text("첨부한 이미지를 해석해주세요")
+                            .media(media)).call().content();
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
