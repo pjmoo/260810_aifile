@@ -13,11 +13,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeTypeUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -34,8 +36,18 @@ public class ImageService {
                 .defaultSystem("너는 이미지를 해석하는 역할이야. 이미지의 특징적인 부분을 설명해줘")
                 .build();
         try {
-            S3Resource result = s3Template.upload("rag", file.getOriginalFilename(), file.getInputStream());
+            String uuid = UUID.randomUUID().toString();
+            String extension = StringUtils.getFilenameExtension(file.getContentType());
+            String newFilename = uuid + "." + extension;
+            S3Resource result = s3Template.upload("rag", newFilename, file.getInputStream());
+            // https://wcjfoevpwelyqclvpshz.storage.supabase.co/storage/v1/s3/rag/movie.jpg
+            // https://wcjfoevpwelyqclvpshz.supabase.co/storage/v1/object/public/rag/movie.jpg
+            // storage.supabase.co/storage/v1/s3 -> supabase.co/storage/v1/object/public
             System.out.println("result = " + result.getURL());
+            String publicUrl = result.getURL().toString()
+                    .replace("storage.supabase.co/storage/v1/s3",
+                            "supabase.co/storage/v1/object/public");
+            System.out.println("publicUrl = " + publicUrl);
             byte[] resized = resize(file.getInputStream(),
                     file.getContentType().split("/")[1]
                     , 512, 512);
@@ -52,6 +64,7 @@ public class ImageService {
 //                    .media(media)
                     .text(caption)
                     .metadata("caption", caption)
+                    .metadata("publicUrl", publicUrl)
                     .build();
 //            return chatClient.prompt()
 //                    .user(u -> u
