@@ -5,7 +5,6 @@ import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.content.Media;
-import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
@@ -20,8 +19,6 @@ import java.io.InputStream;
 public class ImageService {
     @Qualifier("googleGenAiChatModel")
     private final ChatModel chatModel;
-    @Qualifier("openAiEmbeddingModel")
-    private final EmbeddingModel embeddingModel;
 
     public String explain(MultipartFile file) {
         ChatClient chatClient = ChatClient.builder(chatModel)
