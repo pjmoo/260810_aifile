@@ -16,10 +16,16 @@
         <button>Image 업로드</button>
     </form>
     <p>[[${answer}]]</p>
-    <!--    <form th:action="@{/pdf/rag}" method="post">-->
-    <!--        <input type="text" name="query" placeholder="질문을 입력하세요">-->
-    <!--        <button>질문하기</button>-->
-    <!--    </form>-->
+    <!--    -->
+    <form th:action="@{/image/search}" method="post">
+        <input type="text" name="query" placeholder="질문을 입력하세요">
+        <button>질문하기</button>
+    </form>
+    <!--    <p>[[${results}]]</p>-->
+    <div th:each="result : ${results}">
+        <p th:text="${result.caption}"></p>
+        <img th:src="${result.publicUrl}" alt="Image" width="240">
+    </div>
 </section>
 </body>
 </html>
