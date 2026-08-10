@@ -11,6 +11,11 @@ spring:
     activate:
       on-profile: dev
   ai:
+    openai:
+      api-key: ${GEMINI_API_KEY:empty}
+      embedding:
+        base-url: https://generativelanguage.googleapis.com/v1beta/openai
+        model: gemini-embedding-2
     google:
       genai:
         chat:
