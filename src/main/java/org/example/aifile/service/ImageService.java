@@ -4,10 +4,12 @@ import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
 import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;
+import org.example.aifile.dto.ImageRagSearchResult;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.content.Media;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
@@ -30,6 +32,23 @@ public class ImageService {
     private final VectorStore imageVectorStore;
     // Supabase Storage
     private final S3Template s3Template;
+
+    public List<ImageRagSearchResult> imageRagSearch(String query) {
+        SearchRequest request = SearchRequest.builder()
+                .query(query)
+                .topK(3)
+                .similarityThreshold(0.5)
+//                .filterExpression()
+                .build();
+        List<Document> results = imageVectorStore.similaritySearch(request);
+        return results.stream().map(
+                d -> {
+                    Object caption = d.getMetadata().get("caption");
+                    Object publicUrl = d.getMetadata().get("publicUrl");
+                    return new ImageRagSearchResult(caption.toString(), publicUrl.toString());
+                }
+        ).toList();
+    }
 
     public String explain(MultipartFile file) {
         ChatClient chatClient = ChatClient.builder(chatModel)

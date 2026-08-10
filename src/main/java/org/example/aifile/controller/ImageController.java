@@ -33,4 +33,12 @@ public class ImageController {
         redirectAttributes.addFlashAttribute("answer", answer);
         return "redirect:/image";
     }
+
+    @PostMapping("/search")
+    public String search(@RequestParam String query,
+                         RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("results",
+                imageService.imageRagSearch(query));
+        return "redirect:/image";
+    }
 }
