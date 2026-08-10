@@ -15,6 +15,11 @@
         <input type="file" name="file" accept="application/pdf" required>
         <button>PDF 업로드</button>
     </form>
+    <p>[[${answer}]]</p>
+    <form th:action="@{/pdf/rag}" method="post">
+        <input type="text" name="query" placeholder="질문을 입력하세요">
+        <button>질문하기</button>
+    </form>
 </section>
 </body>
 </html>

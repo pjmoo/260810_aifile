@@ -32,4 +32,12 @@ public class PDFController {
                 "msg", "파일 업로드 완료 : %d개의 청크".formatted(size));
         return "redirect:/pdf";
     }
+
+    @PostMapping("/rag")
+    public String rag(@RequestParam String query,
+                      RedirectAttributes redirectAttributes) {
+        String answer = pDFService.ragChat(query);
+        redirectAttributes.addFlashAttribute("answer", answer);
+        return "redirect:/pdf";
+    }
 }
