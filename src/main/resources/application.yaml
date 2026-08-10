@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: aifile
+  profiles:
+    active: dev,db,ai,file
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+      # 환경변수 불러오기
+    import: optional:file:.env.dev[.properties]

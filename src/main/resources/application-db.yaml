@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    # postgresql -> 알아서 유추해서 jdbc 매핑을 함
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT:5432}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+#    driver-class-name: org.postgresql.Driver
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
