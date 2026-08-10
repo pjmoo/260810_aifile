@@ -37,7 +37,7 @@ public class ImageService {
                 .build();
         try {
             String uuid = UUID.randomUUID().toString();
-            String extension = StringUtils.getFilenameExtension(file.getContentType());
+            String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
             String newFilename = uuid + "." + extension;
             S3Resource result = s3Template.upload("rag", newFilename, file.getInputStream());
             // https://wcjfoevpwelyqclvpshz.storage.supabase.co/storage/v1/s3/rag/movie.jpg
