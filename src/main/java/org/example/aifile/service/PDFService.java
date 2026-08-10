@@ -5,6 +5,7 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
 import org.springframework.ai.reader.pdf.config.PdfDocumentReaderConfig;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
+import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PDFService {
+    private final PgVectorStore vectorStore;
+
     public int uploadPDF(MultipartFile file) {
         validate(file); // -> 문제가 있으면 throw 되면서 에러 핸들러로 처리가 됨
         // pdf 내용 추출
@@ -31,6 +34,7 @@ public class PDFService {
             List<Document> chunks = splitter.apply(pages); // 800 토큰으로 쪼개줌 (apply, split)
             chunks.forEach(chunk -> chunk.getMetadata().put("filename", file.getOriginalFilename()));
             // vector store
+            vectorStore.add(chunks);
             return chunks.size();
         } catch (IOException e) {
             throw new IllegalArgumentException("파일을 읽는 중 오류가 발생했습니다.");
